@@ -8,38 +8,55 @@ import {
 } from "@/components/ui/dropdown-menu";
 import Icon from "@/components/ui/icon";
 
-const FilterTabs = () => {
+interface FilterTabsProps {
+  selectedCategory: string;
+  selectedTimeFilter: string;
+  onCategoryChange: (category: string) => void;
+  onTimeFilterChange: (filter: string) => void;
+  activeSubTab: string;
+  onSubTabChange: (tab: string) => void;
+}
+
+const FilterTabs = ({
+  selectedCategory,
+  selectedTimeFilter,
+  onCategoryChange,
+  onTimeFilterChange,
+  activeSubTab,
+  onSubTabChange,
+}: FilterTabsProps) => {
+  const subTabs = ["В тренде", "Новые", "Подписки"];
+
+  const categories = [
+    "Все категории",
+    "Концепт-арт",
+    "Иллюстрация",
+    "3D",
+    "2D анимация",
+    "Окружение",
+    "Персонажи",
+  ];
+
+  const timeFilters = ["За все время", "За неделю", "За месяц", "За год"];
+
   return (
-    <div className="flex items-center justify-between mb-8">
-      {/* Основные фильтры */}
-      <Tabs defaultValue="trending" className="w-auto">
-        <TabsList className="bg-gray-800 border-gray-700">
-          <TabsTrigger
-            value="trending"
-            className="text-gray-300 data-[state=active]:text-white"
+    <div className="mb-6">
+      {/* Подвкладки */}
+      <div className="flex space-x-1 mb-4 bg-gray-800 p-1 rounded-lg w-fit">
+        {subTabs.map((tab) => (
+          <button
+            key={tab}
+            onClick={() => onSubTabChange(tab)}
+            className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+              activeSubTab === tab
+                ? "bg-blue-600 text-white"
+                : "text-gray-400 hover:text-white hover:bg-gray-700"
+            }`}
           >
-            В тренде
-          </TabsTrigger>
-          <TabsTrigger
-            value="latest"
-            className="text-gray-300 data-[state=active]:text-white"
-          >
-            Новые
-          </TabsTrigger>
-          <TabsTrigger
-            value="popular"
-            className="text-gray-300 data-[state=active]:text-white"
-          >
-            Популярные
-          </TabsTrigger>
-          <TabsTrigger
-            value="following"
-            className="text-gray-300 data-[state=active]:text-white"
-          >
-            Подписки
-          </TabsTrigger>
-        </TabsList>
-      </Tabs>
+            {tab}
+          </button>
+        ))}
+      </div>
 
       {/* Дополнительные фильтры */}
       <div className="flex items-center space-x-2">
@@ -49,32 +66,20 @@ const FilterTabs = () => {
               variant="outline"
               className="bg-gray-800 border-gray-700 text-gray-300 hover:bg-gray-700"
             >
-              Категория
+              {selectedCategory}
               <Icon name="ChevronDown" className="ml-2" size={16} />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent className="bg-gray-800 border-gray-700">
-            <DropdownMenuItem className="text-gray-300 hover:bg-gray-700">
-              Все категории
-            </DropdownMenuItem>
-            <DropdownMenuItem className="text-gray-300 hover:bg-gray-700">
-              Концепт-арт
-            </DropdownMenuItem>
-            <DropdownMenuItem className="text-gray-300 hover:bg-gray-700">
-              Иллюстрация
-            </DropdownMenuItem>
-            <DropdownMenuItem className="text-gray-300 hover:bg-gray-700">
-              3D
-            </DropdownMenuItem>
-            <DropdownMenuItem className="text-gray-300 hover:bg-gray-700">
-              2D анимация
-            </DropdownMenuItem>
-            <DropdownMenuItem className="text-gray-300 hover:bg-gray-700">
-              Окружение
-            </DropdownMenuItem>
-            <DropdownMenuItem className="text-gray-300 hover:bg-gray-700">
-              Персонажи
-            </DropdownMenuItem>
+            {categories.map((category) => (
+              <DropdownMenuItem
+                key={category}
+                onClick={() => onCategoryChange(category)}
+                className="text-gray-300 hover:bg-gray-700"
+              >
+                {category}
+              </DropdownMenuItem>
+            ))}
           </DropdownMenuContent>
         </DropdownMenu>
 
@@ -84,23 +89,20 @@ const FilterTabs = () => {
               variant="outline"
               className="bg-gray-800 border-gray-700 text-gray-300 hover:bg-gray-700"
             >
-              Время
+              {selectedTimeFilter}
               <Icon name="ChevronDown" className="ml-2" size={16} />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent className="bg-gray-800 border-gray-700">
-            <DropdownMenuItem className="text-gray-300 hover:bg-gray-700">
-              За все время
-            </DropdownMenuItem>
-            <DropdownMenuItem className="text-gray-300 hover:bg-gray-700">
-              За неделю
-            </DropdownMenuItem>
-            <DropdownMenuItem className="text-gray-300 hover:bg-gray-700">
-              За месяц
-            </DropdownMenuItem>
-            <DropdownMenuItem className="text-gray-300 hover:bg-gray-700">
-              За год
-            </DropdownMenuItem>
+            {timeFilters.map((filter) => (
+              <DropdownMenuItem
+                key={filter}
+                onClick={() => onTimeFilterChange(filter)}
+                className="text-gray-300 hover:bg-gray-700"
+              >
+                {filter}
+              </DropdownMenuItem>
+            ))}
           </DropdownMenuContent>
         </DropdownMenu>
 
